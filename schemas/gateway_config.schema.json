@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbob.local/schemas/gateway_config.schema.json",
+  "title": "OpenBoB Gateway Config (Bootstrap)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "gateway": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bind": { "type": "string" },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+        "auth": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "mode": { "type": "string", "enum": ["none", "token"] },
+            "token": { "type": ["string", "null"] }
+          },
+          "required": ["mode", "token"]
+        },
+        "logging": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "level": { "type": "string", "enum": ["debug", "info", "warn", "error"] },
+            "json": { "type": "boolean" }
+          },
+          "required": ["level", "json"]
+        }
+      },
+      "required": ["bind", "port", "auth", "logging"]
+    },
+    "vfsRoots": { "$ref": "vfs_roots.schema.json" },
+    "toolsPolicies": { "$ref": "tools_policies.schema.json" },
+    "policies": { "type": "array", "items": { "$ref": "policy.schema.json" } },
+    "routing": { "$ref": "routing.schema.json" },
+    "agents": { "type": "array", "items": { "$ref": "agent_profile.schema.json" } }
+  },
+  "required": ["gateway", "vfsRoots", "toolsPolicies", "policies", "routing", "agents"]
+}

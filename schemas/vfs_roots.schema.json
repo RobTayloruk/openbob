@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbob.local/schemas/vfs_roots.schema.json",
+  "title": "OpenBoB Visible Roots (VFS Roots)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "roots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "rootId": { "type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9_-]{0,63}$" },
+          "label": { "type": ["string", "null"], "maxLength": 200 },
+          "visibility": { "type": "string", "enum": ["hidden", "read_only", "read_write"] },
+          "backends": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "context": { "type": "string", "enum": ["gateway_windows", "tool_docker", "tool_wsl2", "tool_local_process"] },
+                "path": { "type": "string", "minLength": 1, "maxLength": 2000 },
+                "mountHint": { "type": ["object", "null"], "additionalProperties": true }
+              },
+              "required": ["context", "path", "mountHint"]
+            }
+          },
+          "constraints": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "denyExtensions": { "type": ["array", "null"], "items": { "type": "string" } },
+              "allowExtensions": { "type": ["array", "null"], "items": { "type": "string" } },
+              "maxFileBytes": { "type": ["integer", "null"], "minimum": 1, "maximum": 5000000000 }
+            },
+            "required": ["denyExtensions", "allowExtensions", "maxFileBytes"]
+          },
+          "note": { "type": ["string", "null"], "maxLength": 2000 }
+        },
+        "required": ["rootId", "label", "visibility", "backends", "constraints", "note"]
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "readRoot": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "writeRoot": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "tempRoot": { "type": "string", "minLength": 1, "maxLength": 64 }
+      },
+      "required": ["readRoot", "writeRoot", "tempRoot"]
+    }
+  },
+  "required": ["roots", "defaults"]
+}

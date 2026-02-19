@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbob.local/schemas/agent_profile.schema.json",
+  "title": "OpenBoB Agent Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "agentId": { "$ref": "common.schema.json#/$defs/Id" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "modelProfileId": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "systemPrompt": { "type": "string", "minLength": 1, "maxLength": 200000 },
+    "persona": { "type": ["string", "null"], "maxLength": 20000 },
+    "tooling": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "toolMode": { "type": "string", "enum": ["none", "auto", "required"] },
+        "maxToolCallsPerRun": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000 },
+        "maxRunSeconds": { "type": ["integer", "null"], "minimum": 1, "maximum": 86400 },
+        "preferToolHostId": { "type": ["string", "null"], "maxLength": 200 }
+      },
+      "required": ["toolMode", "maxToolCallsPerRun", "maxRunSeconds", "preferToolHostId"]
+    },
+    "memory": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "strategy": { "type": ["string", "null"], "enum": ["none", "summaries", "vector", "hybrid", null] },
+        "maxFacts": { "type": ["integer", "null"], "minimum": 0, "maximum": 100000 },
+        "embedProviderId": { "type": ["string", "null"], "maxLength": 200 },
+        "embedModel": { "type": ["string", "null"], "maxLength": 200 }
+      },
+      "required": ["enabled", "strategy", "maxFacts", "embedProviderId", "embedModel"]
+    },
+    "guards": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allowWeb": { "type": ["boolean", "null"] },
+        "allowFileIO": { "type": ["boolean", "null"] },
+        "allowSecretsUse": { "type": ["boolean", "null"] },
+        "requireCitationsForWeb": { "type": ["boolean", "null"] }
+      },
+      "required": ["allowWeb", "allowFileIO", "allowSecretsUse", "requireCitationsForWeb"]
+    },
+    "note": { "type": ["string", "null"], "maxLength": 2000 }
+  },
+  "required": ["agentId", "name", "modelProfileId", "systemPrompt", "persona", "tooling", "memory", "guards", "note"]
+}

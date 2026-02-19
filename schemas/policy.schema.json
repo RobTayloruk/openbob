@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbob.local/schemas/policy.schema.json",
+  "title": "OpenBoB Session Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "policyId": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "toolsPolicyId": { "type": ["string", "null"], "maxLength": 200 },
+    "requiresMention": { "type": "boolean" },
+    "requiresReply": { "type": "boolean" },
+    "pairingRequired": { "type": "boolean" },
+    "toolMode": { "type": "string", "enum": ["none", "auto", "required"] }
+  },
+  "required": ["policyId", "name", "toolsPolicyId", "requiresMention", "requiresReply", "pairingRequired", "toolMode"]
+}

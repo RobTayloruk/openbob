@@ -1,0 +1,55 @@
+{
+  "gateway": {
+    "bind": "127.0.0.1",
+    "port": 7337,
+    "auth": { "mode": "none", "token": null },
+    "logging": { "level": "info", "json": false }
+  },
+  "vfsRoots": {
+    "roots": [
+      {
+        "rootId": "workspace",
+        "label": "Workspace",
+        "visibility": "read_write",
+        "backends": [
+          { "context": "gateway_windows", "path": "C:\\\\Users\\\\%USERNAME%\\\\.openbob\\\\workspace", "mountHint": null }
+        ],
+        "constraints": { "denyExtensions": [".exe", ".dll"], "allowExtensions": null, "maxFileBytes": 200000000 },
+        "note": null
+      }
+    ],
+    "defaults": { "readRoot": "workspace", "writeRoot": "workspace", "tempRoot": "workspace" }
+  },
+  "toolsPolicies": {
+    "policies": [
+      { "policyId": "tp_off", "name": "Tools Off", "defaultAction": "deny", "rules": [], "overlays": [] },
+      { "policyId": "tp_full", "name": "Full Tools (Guarded)", "defaultAction": "allow", "rules": [], "overlays": [] }
+    ],
+    "defaultToolsPolicyId": "tp_full"
+  },
+  "policies": [
+    {
+      "policyId": "p_full",
+      "name": "Full",
+      "toolsPolicyId": "tp_full",
+      "requiresMention": false,
+      "requiresReply": false,
+      "pairingRequired": false,
+      "toolMode": "auto"
+    }
+  ],
+  "routing": { "defaultAgentId": "a_default", "defaultPolicyId": "p_full", "rules": [] },
+  "agents": [
+    {
+      "agentId": "a_default",
+      "name": "Default Agent",
+      "modelProfileId": "mp_local_stub",
+      "systemPrompt": "You are OpenBoB. (bootstrap runtime stub)",
+      "persona": null,
+      "tooling": { "toolMode": "auto", "maxToolCallsPerRun": 50, "maxRunSeconds": 120, "preferToolHostId": null },
+      "memory": { "enabled": false, "strategy": "none", "maxFacts": 0, "embedProviderId": null, "embedModel": null },
+      "guards": { "allowWeb": null, "allowFileIO": null, "allowSecretsUse": null, "requireCitationsForWeb": null },
+      "note": null
+    }
+  ]
+}

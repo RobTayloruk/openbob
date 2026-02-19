@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbob.local/schemas/routing.schema.json",
+  "title": "OpenBoB Routing (Bootstrap)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "defaultAgentId": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "defaultPolicyId": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "rules": { "type": "array", "items": { "type": "object", "additionalProperties": true } }
+  },
+  "required": ["defaultAgentId", "defaultPolicyId", "rules"]
+}

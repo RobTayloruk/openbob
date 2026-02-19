@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbob.local/schemas/tools_policies.schema.json",
+  "title": "OpenBoB Tools Policies",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "policies": { "type": "array", "items": { "$ref": "tools_policy.schema.json" } },
+    "defaultToolsPolicyId": { "type": ["string", "null"] }
+  },
+  "required": ["policies", "defaultToolsPolicyId"]
+}

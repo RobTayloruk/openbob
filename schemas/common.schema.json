@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbob.local/schemas/common.schema.json",
+  "$defs": {
+    "Id": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "IsoDateTime": { "type": "string", "format": "date-time" },
+    "JsonObject": { "type": "object", "additionalProperties": true }
+  }
+}

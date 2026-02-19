@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openbob.local/schemas/tools_policy.schema.json",
+  "title": "OpenBoB Tools Policy (Bootstrap)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "policyId": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "defaultAction": { "type": "string", "enum": ["allow", "deny"] },
+    "rules": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+    "overlays": { "type": "array", "items": { "type": "object", "additionalProperties": true } }
+  },
+  "required": ["policyId", "name", "defaultAction", "rules", "overlays"]
+}

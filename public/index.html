@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenBoB</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <aside class="sidebar">
+        <h1>OpenBoB</h1>
+        <button id="newSessionBtn">+ New session</button>
+        <ul id="sessionList"></ul>
+      </aside>
+      <section class="chat">
+        <header>
+          <div class="header-row">
+            <h2 id="sessionTitle">Main</h2>
+            <span id="connectionState" class="state">Connecting...</span>
+          </div>
+          <p>Commands: /help /calc /todo /time</p>
+          <div class="quick-actions">
+            <button type="button" data-command="/help">/help</button>
+            <button type="button" data-command="/time">/time</button>
+            <button type="button" data-command="/todo list">/todo list</button>
+          </div>
+          <p id="errorText" class="error-text" hidden></p>
+        </header>
+        <div id="messages" class="messages"></div>
+        <form id="chatForm">
+          <input id="chatInput" placeholder="Ask OpenBoB anything..." autocomplete="off" />
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

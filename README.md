@@ -1,29 +1,36 @@
-# OpenBoB (bootstrap)
+# OpenBoB
 
-This is a runnable starter gateway for OpenBoB:
-- HTTP /health
-- WebSocket RPC at /ws
-- Event streaming (subscribe/unsubscribe)
-- Sessions + minimal run loop
-- Config + JSON Schema validation (Ajv)
+OpenBoB is a local AI-style chat gateway and dashboard inspired by ClawdBot, with a cleaner UI and extra built-in tools.
 
-## Run (Windows 10)
-```powershell
-npm i
+## Features
+- Real-time WebSocket RPC gateway
+- Multi-session chat UI with quick command chips and connection status
+- Slash command toolkit:
+  - `/help`
+  - `/time`
+  - `/calc <expression>` (safe parser, no `eval`)
+  - `/todo add|done|list|clear`
+- Live event streaming (`session.*`, `run.*`)
+- JSON-schema validated config
+
+## Run
+```bash
+npm install
 npm run dev
 ```
 
-Health:
-http://127.0.0.1:7337/health
+Then open:
+- App: http://127.0.0.1:7337/
+- Health: http://127.0.0.1:7337/health
+- WS RPC: ws://127.0.0.1:7337/ws
 
-WS RPC:
-ws://127.0.0.1:7337/ws
-
-## Quick WS test
-```powershell
-npm run test:ws
+## Build
+```bash
+npm run build
+npm run start
 ```
 
-## Config
-Edit gateway.json and restart.
-
+## Quick RPC test
+```bash
+npm run test:ws
+```

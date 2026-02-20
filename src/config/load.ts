@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import Ajv from "ajv";
+import Ajv2020 from "ajv/dist/2020.js";
 
 export type GatewayConfig = any;
 
@@ -14,10 +14,10 @@ export function loadConfig(configPath: string): GatewayConfig {
   const schemasDir = path.resolve(process.cwd(), "schemas");
   const schemaMainPath = path.join(schemasDir, "gateway_config.schema.json");
 
-  const ajv = new Ajv({ allErrors: true, strict: false });
+  const ajv = new Ajv2020({ allErrors: true, strict: false });
 
   for (const file of fs.readdirSync(schemasDir)) {
-    if (!file.endsWith(".schema.json")) continue;
+    if (!file.endsWith(".schema.json") || file === "gateway_config.schema.json") continue;
     const p = path.join(schemasDir, file);
     const s = JSON.parse(fs.readFileSync(p, "utf8"));
     ajv.addSchema(s, file);
@@ -29,7 +29,7 @@ export function loadConfig(configPath: string): GatewayConfig {
   const ok = validate(cfg);
   if (!ok) {
     const msg = ajv.errorsText(validate.errors, { separator: "\\n" });
-    throw new Error(`Config schema validation failed:\\n${msg}`);
+    throw new Error(`Config schema validation failed:\n${msg}`);
   }
 
   return cfg;

@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { WebSocketServer } from "ws";
@@ -13,6 +14,7 @@ const cfg = loadConfig(cfgPath);
 
 const HOST = cfg.gateway.bind;
 const PORT = cfg.gateway.port;
+const publicDir = path.resolve(process.cwd(), "public");
 
 const server = http.createServer((req, res) => {
   if (req.url === "/health") {
@@ -20,11 +22,25 @@ const server = http.createServer((req, res) => {
     res.end(JSON.stringify({ ok: true, config: path.basename(cfgPath) }));
     return;
   }
+
   if (req.url === "/config") {
     res.writeHead(200, { "content-type": "application/json" });
     res.end(JSON.stringify(cfg, null, 2));
     return;
   }
+
+  if (req.url === "/" || req.url === "/index.html") {
+    return sendStatic(res, path.join(publicDir, "index.html"), "text/html; charset=utf-8");
+  }
+
+  if (req.url === "/styles.css") {
+    return sendStatic(res, path.join(publicDir, "styles.css"), "text/css; charset=utf-8");
+  }
+
+  if (req.url === "/app.js") {
+    return sendStatic(res, path.join(publicDir, "app.js"), "application/javascript; charset=utf-8");
+  }
+
   res.writeHead(404, { "content-type": "text/plain" });
   res.end("Not Found");
 });
@@ -43,6 +59,7 @@ server.on("upgrade", (req, socket, head) => {
 
 const bus = new EventBus();
 const sessions = new SessionStore();
+sessions.getOrCreate("s_main", "Main");
 const handlers = createGatewayHandlers({ bus, sessions, config: cfg });
 
 wss.on("connection", (ws) => {
@@ -54,3 +71,14 @@ server.listen(PORT, HOST, () => {
   console.log(`[openbob] listening on http://${HOST}:${PORT}`);
   console.log(`[openbob] ws rpc on ws://${HOST}:${PORT}/ws`);
 });
+
+function sendStatic(res: http.ServerResponse, filePath: string, contentType: string) {
+  try {
+    const body = fs.readFileSync(filePath);
+    res.writeHead(200, { "content-type": contentType });
+    res.end(body);
+  } catch {
+    res.writeHead(404, { "content-type": "text/plain" });
+    res.end("Not Found");
+  }
+}

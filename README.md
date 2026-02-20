@@ -4,7 +4,7 @@ OpenBoB is a local AI-style chat gateway and dashboard inspired by ClawdBot, wit
 
 ## Features
 - Real-time WebSocket RPC gateway
-- Multi-session chat UI with quick command chips and connection status
+- Multi-session chat UI with quick command chips, session rename, and connection status
 - Slash command toolkit:
   - `/help`
   - `/time`

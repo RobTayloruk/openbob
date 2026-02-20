@@ -14,14 +14,16 @@ export function createGatewayHandlers(opts: { bus: EventBus; sessions: SessionSt
     "gateway.sessions.list": async () => ({ sessions: sessions.list() }),
 
     "gateway.sessions.create": async (req) => {
-      const title = typeof (req.params as any)?.title === "string" ? (req.params as any).title : "New Session";
+      const titleRaw = typeof (req.params as any)?.title === "string" ? (req.params as any).title : "New Session";
+      const title = titleRaw.trim() || "New Session";
       const session = sessions.create(title);
       return { session };
     },
 
     "gateway.sessions.rename": async (req) => {
       const sessionId = typeof (req.params as any)?.sessionId === "string" ? (req.params as any).sessionId : null;
-      const title = typeof (req.params as any)?.title === "string" ? (req.params as any).title : null;
+      const titleRaw = typeof (req.params as any)?.title === "string" ? (req.params as any).title : null;
+      const title = titleRaw?.trim() ?? null;
       if (!sessionId || !title) throw new Error("INVALID_PARAMS: sessionId and title required");
       const session = sessions.rename(sessionId, title);
       if (!session) throw new Error("NOT_FOUND: session not found");
